@@ -86,7 +86,7 @@ jobs:
               run: |
                 echo "$SERVER_PWD" | sudo -S systemctl enable hello-actions.service
                 echo "$SERVER_PWD" | sudo -S systemctl start hello-actions.service
-                echo "$SERVER_PWD" | sudo -S systemctl status hello-actions.service --no-pager
+
             - name: Current user
               run: whoami
 
