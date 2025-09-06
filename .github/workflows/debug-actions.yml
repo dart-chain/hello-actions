@@ -23,3 +23,7 @@ jobs:
               run: |
                 echo "The name of the action is ${{ github.repository_owner }}"
 
+            - name: event_name
+              run: |
+                echo "The name of the event is ${{ github.event_name }}"
+
