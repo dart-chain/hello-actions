@@ -76,8 +76,9 @@ jobs:
 
             - name: Move application and service to /usr/local/bin
               shell: bash
-              run: |
-                echo "$SERVER_PWD" | sudo -S mv hello-actions /usr/local/bin/hello-actions
+              run: b
+                echo "$SERVER_PWD" | sudo -S chmod +x hello-actions
+                echo "$SERVER_PWD" | sudo -S mv hello-actions /usr/bin/hello-actions
                 echo "$SERVER_PWD" | sudo -S mv hello-actions.service /etc/systemd/system/hello-actions.service
 
             - name: Running an application service
