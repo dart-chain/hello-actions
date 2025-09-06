@@ -72,11 +72,18 @@ jobs:
               with:
                 name: hello-actions
 
-            - name: Run application
+            - name: Move application and service to /usr/local/bin
               shell: bash
               run: |
-                chmod +x hello-actions
-                ./hello-actions
+                sudo mv hello-actions /usr/local/bin/hello-actions
+                sudo mv .github/workflows/hello-actions.service /etc/systemd/system/hello-actions.service
+
+            - name: Running an application service
+              shell: bash
+              run: |
+                sudo systemctl enable hello-actions.service
+                sudo systemctl start hello-actions.service
+                sudo systemctl status hello-actions.service --no-pager
 
             - name: Current user
               run: whoami
