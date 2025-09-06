@@ -1,0 +1,12 @@
+[Unit]
+Description=hello-actions application: say hello
+Documentation=https://github.com/dart-chain/hello-actions
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/hello-actions
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
