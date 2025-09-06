@@ -50,12 +50,12 @@ jobs:
             - name: Extract version from tag
               id: get_version
               run: |
-                echo "VERSION=${{ github.ref }} | grep -oE 'v[0-9]+\.[0-9]+\.[0-9]+' >> $GITHUB_ENV"
+                echo "APP_VERSION=${{ github.ref }} | grep -oE 'v[0-9]+\.[0-9]+\.[0-9]+'" >> $GITHUB_ENV
 
             - name: Show version
               run: |
-                echo "Version is $VERSION"
-                echo "Version is ${{ env.VERSION }}"
+                echo "Version is $APP_VERSION"
+                echo "Version is ${{ env.APP_VERSION }}"
 
             - name: Build application
               run: go build -ldflags="-X 'main.version=v1.0.0'" -o hello-actions ./cmd/main.go
