@@ -25,5 +25,5 @@ jobs:
 
             - name: event_name
               run: |
-                echo "The name of the event is ${{ github.event_name }}"
+                echo "The name of the event is ${{ github.event.ref }}"
 
