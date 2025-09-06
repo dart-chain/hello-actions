@@ -26,3 +26,7 @@ jobs:
             - name: ref information
               run: |
                 echo "The name of the ref is ${{ github.ref_name }}"
+
+            - name: version information
+              run: |
+                echo "The version is ${{ github.event.release.tag_name }}"
