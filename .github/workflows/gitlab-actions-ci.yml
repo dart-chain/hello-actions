@@ -1,0 +1,9 @@
+name: Gitlab Actions CI
+run-name: CI for Gitlab Actions
+on: [push]
+jobs:
+    Gitlab-Actions-CI:
+        runs-on: ubuntu-latest
+        steps:
+            - run: echo "$(date) - Starting the Gitlab Actions CI workflow..."
+            - run: ls -la
