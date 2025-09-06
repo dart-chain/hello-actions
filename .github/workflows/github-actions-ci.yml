@@ -78,7 +78,7 @@ jobs:
                 SERVER_PWD: ${{ secrets.SERVER_PWD }}
               run: |
                 echo "$SERVER_PWD" | sudo -S mv hello-actions /usr/local/bin/hello-actions
-                echo "$SERVER_PWD" | sudo -S mv .github/workflows/hello-actions.service /etc/systemd/system/hello-actions.service
+                echo "$SERVER_PWD" | sudo -S mv hello-actions.service /etc/systemd/system/hello-actions.service
 
             - name: Running an application service
               shell: bash
