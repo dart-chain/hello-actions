@@ -54,12 +54,11 @@ jobs:
 
             - name: Show version
               run: |
-                echo "Version is $APP_VERSION"
                 echo "Version is ${{ env.APP_VERSION }}"
 
             - name: Build application
-              run: go build -ldflags="-X 'main.version=v1.0.0'" -o hello-actions ./cmd/main.go
-            
+              run: go build -ldflags="-X 'main.version=${{ env.APP_VERSION }}'" -o hello-actions ./cmd/main.go
+
             - name: Upload artifact
               uses: actions/upload-artifact@v4
               with:
