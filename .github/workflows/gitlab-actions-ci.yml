@@ -6,4 +6,9 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - run: echo "$(date) - Starting the Gitlab Actions CI workflow..."
-            - run: ls -la
+
+            - name: Checkout code
+              uses: actions/checkout@v3
+
+            - name: List files
+              run: ls -la
