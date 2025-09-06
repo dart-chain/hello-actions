@@ -61,6 +61,8 @@ jobs:
     Deployment:
         runs-on: [self-hosted]
         needs: [Build]
+        env:
+          SERVER_PWD: ${{ secrets.SERVER_PWD }}
         steps:
             - run: echo "$(date) - Starting the deployment..."
 
@@ -74,8 +76,6 @@ jobs:
 
             - name: Move application and service to /usr/local/bin
               shell: bash
-              env:
-                SERVER_PWD: ${{ secrets.SERVER_PWD }}
               run: |
                 echo "$SERVER_PWD" | sudo -S mv hello-actions /usr/local/bin/hello-actions
                 echo "$SERVER_PWD" | sudo -S mv hello-actions.service /etc/systemd/system/hello-actions.service
@@ -83,10 +83,9 @@ jobs:
             - name: Running an application service
               shell: bash
               run: |
-                sudo systemctl enable hello-actions.service
-                sudo systemctl start hello-actions.service
-                sudo systemctl status hello-actions.service --no-pager
-
+                echo "$SERVER_PWD" | sudo -S systemctl enable hello-actions.service
+                echo "$SERVER_PWD" | sudo -S systemctl start hello-actions.service
+                echo "$SERVER_PWD" | sudo -S systemctl status hello-actions.service --no-pager
             - name: Current user
               run: whoami
 
