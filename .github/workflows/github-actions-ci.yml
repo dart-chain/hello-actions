@@ -1,5 +1,5 @@
-name: Gitlab Actions CI
-run-name: CI for Gitlab Actions
+name: Github Actions CI
+run-name: CI for Github Actions
 on: [push]
 jobs:
     Gitlab-Actions-CI:
@@ -32,6 +32,7 @@ jobs:
               run: go test ./...
 
     Build:
+        if: startsWith(github.ref, 'refs/tags/')
         runs-on: ubuntu-latest
         needs: [Test]
         steps:
@@ -45,6 +46,16 @@ jobs:
               with:
                 cache: false
                 go-version: '>=1.20'
+
+            - name: Extract version from tag
+              id: get_version
+              run: |
+                echo "VERSION=${{ github.ref }} | grep -oE 'v[0-9]+\.[0-9]+\.[0-9]+'" >> $GITHUB_ENV"
+
+            - name: Show version
+              run: |
+                echo "Version is $VERSION"
+                echo "Version is ${{ env.VERSION }}"
 
             - name: Build application
               run: go build -ldflags="-X 'main.version=v1.0.0'" -o hello-actions ./cmd/main.go
