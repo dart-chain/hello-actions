@@ -57,7 +57,7 @@ jobs:
                 echo "Version is ${{ env.APP_VERSION }}"
 
             - name: Registry authentication
-              run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ secrets.GITHUB_ACTOR }} --password-stdin
+              run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ secrets.NAMESPACE }} --password-stdin
 
             - name: Build application
               run: |
