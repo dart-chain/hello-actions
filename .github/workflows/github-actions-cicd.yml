@@ -59,11 +59,22 @@ jobs:
             - name: Registry authentication
               run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ secrets.NAMESPACE }} --password-stdin
 
-            - name: Build application
-              run: |
-                echo ${{ secrets.GITHUB_TOKEN }}
-                echo ${{ secrets.NAMESPACE }}
-                echo "${{ secrets.IMAGE_NAME }}:${{ env.APP_VERSION }}"
+            - name: Set up QEMU
+              uses: docker/setup-qemu-action@v3
+
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v3
+
+            - name: Build and push
+              uses: docker/build-push-action@v6
+              with:
+                platforms: linux/amd64,linux/arm64
+                push: true
+                tags: |
+                  ${{ secrets.NAMESPACE }}/${{ secrets.IMAGE_NAME }}:${{ env.APP_VERSION }}
+                  ${{ secrets.NAMESPACE }}/${{ secrets.IMAGE_NAME }}:latest
+                  ghcr.io/${{ secrets.NAMESPACE }}/${{ secrets.IMAGE_NAME }}:${{ env.APP_VERSION }}
+                  ghcr.io/${{ secrets.NAMESPACE }}/${{ secrets.IMAGE_NAME }}:latest
 
             - name: List files
               run: ls -la
@@ -79,23 +90,15 @@ jobs:
             - name: Checkout code
               uses: actions/checkout@v3
 
-            - name: Deploy application
-              uses: actions/download-artifact@v4
-              with:
-                name: hello-actions
+            - name: Registry authentication
+              run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ secrets.NAMESPACE }} --password-stdin
+            
+            - name: Pull image
+              run: docker pull ghcr.io/${{ secrets.NAMESPACE }}/${{ secrets.IMAGE_NAME }}:latest
 
-            - name: Move application and service to /usr/local/bin
-              shell: bash
+            - name: Run container
               run: |
-                echo "$SERVER_PWD" | sudo -S chmod +x hello-actions
-                echo "$SERVER_PWD" | sudo -S mv hello-actions /usr/bin/hello-actions
-                echo "$SERVER_PWD" | sudo -S mv hello-actions.service /etc/systemd/system/hello-actions.service
-
-            - name: Running an application service
-              shell: bash
-              run: |
-                echo "$SERVER_PWD" | sudo -S systemctl enable hello-actions.service
-                echo "$SERVER_PWD" | sudo -S systemctl start hello-actions.service
+                docker run -d --name ${{ secrets.IMAGE_NAME }} -p ${{ secrets.EXPOSE_APP_PORT }}:${{ secrets.APP_PORT }} ghcr.io/${{ secrets.NAMESPACE }}/${{ secrets.IMAGE_NAME }}:latest -p ${{ secrets.APP_PORT }}
 
             - name: Current user
               run: whoami
