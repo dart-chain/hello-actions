@@ -5,7 +5,7 @@ Documentation=https://github.com/dart-chain/hello-actions
 [Service]
 Type=simple
 ExecStart=/usr/bin/hello-actions
-Restart=on-failure
+Restart=always
 RestartSec=5s
 
 [Install]
