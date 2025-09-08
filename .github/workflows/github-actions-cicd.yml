@@ -73,8 +73,6 @@ jobs:
                 build-args: |
                   VERSION=${{ env.APP_VERSION }}
                 tags: |
-                  ${{ secrets.NAMESPACE }}/${{ secrets.IMAGE_NAME }}:${{ env.APP_VERSION }}
-                  ${{ secrets.NAMESPACE }}/${{ secrets.IMAGE_NAME }}:latest
                   ghcr.io/${{ secrets.NAMESPACE }}/${{ secrets.IMAGE_NAME }}:${{ env.APP_VERSION }}
                   ghcr.io/${{ secrets.NAMESPACE }}/${{ secrets.IMAGE_NAME }}:latest
 
