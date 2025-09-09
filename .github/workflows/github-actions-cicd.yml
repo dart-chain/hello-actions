@@ -91,14 +91,15 @@ jobs:
               uses: actions/checkout@v3
 
             - name: Registry authentication
-              run: echo ${{ secrets.ACCESS_TOKEN }} | sudo docker login ghcr.io -u ${{ secrets.NAMESPACE }} --password-stdin
+              run: echo ${{ secrets.ACCESS_TOKEN }} | docker login ghcr.io -u ${{ secrets.NAMESPACE }} --password-stdin
             
             - name: Pull image
-              run: echo ${{ secrets.SERVER_PWD }} | sudo -S docker pull ghcr.io/${{ secrets.NAMESPACE }}/${{ secrets.IMAGE_NAME }}:latest
+              run: docker pull ghcr.io/${{ secrets.NAMESPACE }}/${{ secrets.IMAGE_NAME }}:latest
 
             - name: Run container
               run: |
-                echo ${{ secrets.SERVER_PWD }} | sudo -S docker run -d --name ${{ secrets.IMAGE_NAME }} -p ${{ secrets.EXPOSE_APP_PORT }}:${{ secrets.APP_PORT }} ghcr.io/${{ secrets.NAMESPACE }}/${{ secrets.IMAGE_NAME }}:latest -p ${{ secrets.APP_PORT }}
+                IMAGE_NAME=ghcr.io/${{ secrets.NAMESPACE }}/${{ secrets.IMAGE_NAME }}:latest
+                docker run -d --name ${{ secrets.IMAGE_NAME }} -p ${{ secrets.EXPOSE_APP_PORT }}:${{ secrets.APP_PORT }} $IMAGE_NAME -p ${{ secrets.APP_PORT }}
 
             - name: Current user
               run: whoami
